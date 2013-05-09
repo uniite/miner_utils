@@ -24,8 +24,8 @@ while True:
     # GPU stats (temperature, KHash/s, etc.)
     for name,info in devs.iteritems():
         if not "GPU" in name: continue
-        name = name.replace("=", "").lower()
-        gauge = lambda k,v: statsd.gauge(k, v, tags=["device:%s" % name])
+        gpu_id = int(name.split("=")[1])
+        gauge = lambda k,v: statsd.gauge(k, v, tags=["gpu:%s" % name])
         gauge("gpu.temp", int(float(info["Temperature"])))
         gauge("gpu.khash", int(float(info["MHS 5s"]) * 1000))
         gauge("gpu.fan_rpm", int(info["Fan Speed"]))
