@@ -1,6 +1,6 @@
-import datetime
 import serial
 import sys
+from datetime import datetime
 from time import sleep
 
 
@@ -10,7 +10,7 @@ ser = serial.Serial(COM_PORT)
 try:
     while True:
         ser.write("PING\n")
-        print datetime.datetime.now()
+        print datetime.now()
         if ser.inWaiting() > 0:
             sys.stdout.write(ser.read(ser.inWaiting()))
         sleep(5)

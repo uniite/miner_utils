@@ -1,18 +1,27 @@
-from query import APIClient
+from cgminer_api import APIClient
+from datetime import datetime
 from statsd import statsd
 from time import sleep
 
 
+REPORT_INTERVAL = 10
+
+
 api = APIClient()
 while True:
-    print "Querying API..."
-    summary = api.summary()
+    try:
+        summary = api.summary()
+        devs = api.devs()
+        print "[%s] API Query OK" % datetime.now()
+    except Exception, e:
+        print "Error while querying CGMiner: %s" % e
+        sleep(REPORT_INTERVAL)
+        continue
 
     # Global stats
-    #statsd.gauge("")
+    statsd.gauge("cgminer.work_util", int(float(summary["Work Utility"])))
 
     # GPU stats (temperature, KHash/s, etc.)
-    devs = api.devs()
     for name,info in devs.iteritems():
         if not "GPU" in name: continue
         name = name.replace("=", "").lower()
@@ -21,6 +30,6 @@ while True:
         gauge("gpu.khash", int(float(info["MHS 5s"]) * 1000))
         gauge("gpu.fan_rpm", int(info["Fan Speed"]))
         gauge("gpu.fan_pct", int(info["Fan Percent"]))
-        #gauge("gpu.hw_errors", int(info["Hardware Errors"]))
+        gauge("gpu.hw_errors", int(info["Hardware Errors"]))
 
-    sleep(10)
+    sleep(REPORT_INTERVAL)
