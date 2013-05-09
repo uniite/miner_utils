@@ -25,7 +25,7 @@ while True:
     for name,info in devs.iteritems():
         if not "GPU" in name: continue
         gpu_id = int(name.split("=")[1])
-        gauge = lambda k,v: statsd.gauge(k, v, tags=["gpu:%s" % name])
+        gauge = lambda k,v: statsd.gauge(k, v, tags=["gpu:%s" % gpu_id])
         gauge("gpu.temp", int(float(info["Temperature"])))
         gauge("gpu.khash", int(float(info["MHS 5s"]) * 1000))
         gauge("gpu.fan_rpm", int(info["Fan Speed"]))
