@@ -18,7 +18,7 @@ class CloudWatchMetrics(object):
     def __init__(self):
         self.cloud_watch = CloudWatchConnection(
             aws_access_key_id=config["aws_access_key_id"],
-            aws_secret_access_keey=config["aws_secret_access_key"],
+            aws_secret_access_key=config["aws_secret_access_key"],
             region="us-east-1")
 
     def report_metric(self, namespace, name, value, unit=None, dimensions=None):
