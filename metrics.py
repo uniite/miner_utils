@@ -17,9 +17,9 @@ REPORT_INTERVAL = 10
 class CloudWatchMetrics(object):
     def __init__(self):
         self.cloud_watch = cloudwatch.connect_to_region(
+            "us-east-1",
             aws_access_key_id=config["aws_access_key_id"],
-            aws_secret_access_key=config["aws_secret_access_key"],
-            region="us-east-1")
+            aws_secret_access_key=config["aws_secret_access_key"])
 
     def report_metric(self, namespace, name, value, unit=None, dimensions=None):
         self.cloud_watch.put_metric_data(
