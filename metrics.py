@@ -67,11 +67,11 @@ while True:
             gpu = "GPU%s" % gpu_id
             gpu_metric = lambda k, v: cloud_watch.report_metric("System/GPU", k, v, { "Device": gpu, "Host": HOSTNAME })
             gpu_metric("TemperatureCelcius", temp)
-            gpu_metric("FanSpeedRPM", fan_speed)
-            gpu_metric("FanSpeedPercent", fan_pct)
+            #gpu_metric("FanSpeedRPM", fan_speed)
+            #gpu_metric("FanSpeedPercent", fan_pct)
             cgminer_metric = lambda k, v: cloud_watch.report_metric("App/CGMiner", k, v, { "Device": gpu, "Host": HOSTNAME })
             cgminer_metric("KHashPerSecond", khash_s)
-            cgminer_metric("HardwareErrors", hw_errors)
+            #cgminer_metric("HardwareErrors", hw_errors)
 
 
     sleep(REPORT_INTERVAL)
