@@ -1,0 +1,3 @@
+boto
+dogstatsd-python
+uptime

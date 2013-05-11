@@ -5,6 +5,7 @@ from cgminer_api import APIClient
 from datetime import datetime
 from statsd import statsd
 from time import sleep
+from uptime import uptime
 
 
 config = json.load(open("config.json"))
@@ -44,6 +45,7 @@ while True:
     # Global stats
     if ENABLE_DATADOG:
         statsd.gauge("cgminer.work_util", int(float(summary["Work Utility"])))
+        statsd.gauge("system.uptime_days", uptime() / 3600 / 24)
     if ENABLE_CLOUDWATCH:
         cloud_watch.report_metric("App/CGMner", "WorkUtility", float(summary["Work Utility"]), { "Host": HOSTNAME})
 
