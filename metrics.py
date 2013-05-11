@@ -42,7 +42,10 @@ while True:
         continue
 
     # Global stats
-    statsd.gauge("cgminer.work_util", int(float(summary["Work Utility"])))
+    if ENABLE_DATADOG:
+        statsd.gauge("cgminer.work_util", int(float(summary["Work Utility"])))
+    if ENABLE_CLOUDWATCH:
+        cloud_watch.report_metric("App/CGMner", "WorkUtility", float(summary["Work Utility"]), { "host": HOSTNAME})
 
     # GPU stats (temperature, KHash/s, etc.)
     for name,info in devs.iteritems():
@@ -61,11 +64,12 @@ while True:
             gauge("gpu.fan_pct", fan_pct)
             gauge("gpu.hw_errors", hw_errors)
         if ENABLE_CLOUDWATCH:
-            gpu_metric = lambda k, v: cloud_watch.report_metric("System/GPU", k, v, { "GPU": gpu_id, "Host": HOSTNAME })
+            gpu = "GPU%s" % gpu_id
+            gpu_metric = lambda k, v: cloud_watch.report_metric("System/GPU", k, v, { "Device": gpu, "Host": HOSTNAME })
             gpu_metric("TemperatureCelcius", temp)
             gpu_metric("FanSpeedRPM", fan_speed)
             gpu_metric("FanSpeedPercent", fan_pct)
-            cgminer_metric = lambda k, v: cloud_watch.report_metric("App/CGMiner", k, v, { "GPU": gpu_id, "Host": HOSTNAME })
+            cgminer_metric = lambda k, v: cloud_watch.report_metric("App/CGMiner", k, v, { "Device": gpu, "Host": HOSTNAME })
             cgminer_metric("KHashPerSecond", khash_s)
             cgminer_metric("HardwareErrors", hw_errors)
 
