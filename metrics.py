@@ -1,3 +1,4 @@
+import json
 import os
 from boto.ec2.cloudwatch import CloudWatchConnection
 from cgminer_api import APIClient
@@ -6,7 +7,8 @@ from statsd import statsd
 from time import sleep
 
 
-HOSTNAME = os.environ["HOSTNAME"]
+config = json.load(open("config.json"))
+HOSTNAME = config["hostname"]
 ENABLE_CLOUDWATCH = True
 ENABLE_DATADOG = True
 REPORT_INTERVAL = 10
@@ -15,8 +17,8 @@ REPORT_INTERVAL = 10
 class CloudWatchMetrics(object):
     def __init__(self):
         self.cloud_watch = CloudWatchConnection(
-            aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
-            aws_secret_access_keey=os.environ["AWS_SECRET_ACCESS_KEY"],
+            aws_access_key_id=config["aws_access_key_id"],
+            aws_secret_access_keey=config["aws_secret_access_key"],
             region="us-east-1")
 
     def report_metric(self, namespace, name, value, unit=None, dimensions=None):
