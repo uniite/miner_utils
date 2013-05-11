@@ -21,12 +21,11 @@ class CloudWatchMetrics(object):
             aws_access_key_id=config["aws_access_key_id"],
             aws_secret_access_key=config["aws_secret_access_key"])
 
-    def report_metric(self, namespace, name, value, unit="None", dimensions={}):
+    def report_metric(self, namespace, name, value, dimensions={}):
         self.cloud_watch.put_metric_data(
             namespace=namespace,
             name=name,
             value=value,
-            unit=unit,
             dimensions=dimensions)
 
 
