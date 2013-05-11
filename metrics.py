@@ -52,7 +52,7 @@ while True:
         if not "GPU" in name: continue
         gpu_id = int(name.split("=")[1])
         temp = float(info["Temperature"])
-        khash_s = float(info["MHS 5s"]) / 1000
+        khash_s = float(info["MHS 5s"]) * 1000
         fan_speed = int(info["Fan Speed"])
         fan_pct = int(info["Fan Percent"])
         hw_errors = int(info["Hardware Errors"])
