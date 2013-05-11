@@ -14,7 +14,6 @@ ENABLE_DATADOG = True
 REPORT_INTERVAL = 10
 
 
-us_east_1 = [r for r in regions() if r.name == "us-east-1"][0]
 class CloudWatchMetrics(object):
     def __init__(self):
         self.cloud_watch = cloudwatch.connect_to_region(
