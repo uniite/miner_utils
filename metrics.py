@@ -45,7 +45,7 @@ while True:
     if ENABLE_DATADOG:
         statsd.gauge("cgminer.work_util", int(float(summary["Work Utility"])))
     if ENABLE_CLOUDWATCH:
-        cloud_watch.report_metric("App/CGMner", "WorkUtility", float(summary["Work Utility"]), { "host": HOSTNAME})
+        cloud_watch.report_metric("App/CGMner", "WorkUtility", float(summary["Work Utility"]), { "Host": HOSTNAME})
 
     # GPU stats (temperature, KHash/s, etc.)
     for name,info in devs.iteritems():
