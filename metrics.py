@@ -1,7 +1,6 @@
 import json
 import os
-from boto.ec2 import regions
-from boto.ec2.cloudwatch import CloudWatchConnection
+from boto.ec2 import cloudwatch
 from cgminer_api import APIClient
 from datetime import datetime
 from statsd import statsd
@@ -18,10 +17,10 @@ REPORT_INTERVAL = 10
 us_east_1 = [r for r in regions() if r.name == "us-east-1"][0]
 class CloudWatchMetrics(object):
     def __init__(self):
-        self.cloud_watch = CloudWatchConnection(
+        self.cloud_watch = cloudwatch.connect_to_region(
             aws_access_key_id=config["aws_access_key_id"],
             aws_secret_access_key=config["aws_secret_access_key"],
-            region=us_east_1)
+            region="us-east-1")
 
     def report_metric(self, namespace, name, value, unit=None, dimensions=None):
         self.cloud_watch.put_metric_data(
